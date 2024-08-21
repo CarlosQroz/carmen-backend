@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import cors from 'cors';
 
 import employeesRoutes from "./routes/employees.routes.js";
 import indexRoutes from "./routes/index.routes.js";
@@ -8,8 +9,12 @@ import productosRoutes from "./routes/productos.routes.js";
 import variantesRoutes from "./routes/variantes_producto.routes.js";
 import stocksRoutes from "./routes/stocks.routes.js";
 import ventasRoutes from "./routes/ventas.routes.js";
+import categoryRoutes from "./routes/categorys.routes.js";
+import objectRoutes from "./routes/objects.routes.js";
+import detailRoutes from "./routes/details.routes.js";
 
 const app = express();
+app.use(cors());
 
 //dates
 app.use((req, res, next) => {
@@ -34,6 +39,11 @@ app.use("/api", productosRoutes );
 app.use("/api", variantesRoutes );
 app.use("/api", stocksRoutes);
 app.use("/api", ventasRoutes);
+app.use("/api", categoryRoutes);
+app.use("/api", objectRoutes);
+app.use("/api", detailRoutes)
+
+
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Not found" });
