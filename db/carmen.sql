@@ -3,13 +3,15 @@ use carmendb
 
 CREATE TABLE category (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(25) NOT NULL
+    name VARCHAR(25) NOT NULL,
+    image_url VARCHAR(255)
 );
-
 describe category
-INSERT INTO category (name) VALUES ('varones');
-INSERT INTO category (name) VALUES ('damas');
-INSERT INTO category (name) VALUES ('otros');
+
+INSERT INTO category (name, image_url) VALUES ('varones', 'hello');
+INSERT INTO category (name,image_url) VALUES ('damas', 'hello');
+INSERT INTO category (name, image_url) VALUES ('otros', 'hello');
+
 select * from category
 
 
@@ -18,14 +20,17 @@ CREATE TABLE object (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT,
     name VARCHAR(100) NOT NULL,
+    image_url VARCHAR(255), 
     FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE
 );
+
+
 select * from object
 -- Insertar categorías
-INSERT INTO object (category_id, name) VALUES ("1", 'Polo');
-INSERT INTO object (category_id, name) VALUES ("2", 'Polo');
-INSERT INTO object (category_id, name) VALUES ("3", 'Lapizero');
-INSERT INTO object (category_id, name) VALUES ("2", 'blusa');
+INSERT INTO object (category_id, name, image_url) VALUES ("1", 'Polo', 'hello');
+INSERT INTO object (category_id, name, image_url) VALUES ("2", 'Pantalon','https://www.shutterstock.com/image-photo/blue-jeans-isolated-on-white-260nw-2248481459.jpg');
+INSERT INTO object (category_id, name, image_url) VALUES ("3", 'Lapizero','test1');
+INSERT INTO object (category_id, name, image_url) VALUES ("2", 'blusa', 'test2');
 select * from object
 describe object
 
@@ -44,22 +49,21 @@ INSERT INTO detail (object_id, details, stock, precio_unitario) VALUES
 (4, 'M', 60, 20.99),
 (4, 'L', 40, 21.99),
 (4, 'XL', 30, 22.99);
+
 describe detail
 select * from detail
 
 -- Test table products
-CREATE TABLE IF NOT EXISTS products (
+/*CREATE TABLE IF NOT EXISTS products (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
-);
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(100) NOT NULL
+);*/
 
-CREATE TABLE IF NOT EXISTS productos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
-);
-INSERT INTO productos (name) VALUES
-("Camisa"),
-("Bolso");
+/*  INSERT INTO products (name, description) VALUES
+("Camisa", 'prenda para especiliada de adm'),
+("Bolso", 'parte del material de estudio' );
+*/
 
 -- Lineas para eliminar todas las tablas, no ejecutar en la creacion de nuevos valores
 DROP TABLE IF EXISTS products;

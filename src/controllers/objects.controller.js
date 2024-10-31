@@ -79,3 +79,19 @@ export const updateObject = async (req, res) => {
     return res.status(500).json({ message: "Something goes wrong" });
   }
 };
+//Object by CategoryID
+export const getObjectsByCategory = async (req, res) => {
+  try {
+    const { categoryId } = req.params; 
+    const [rows] = await pool.query("SELECT * FROM object WHERE category_id = ?", [categoryId]);
+
+    if (rows.length <= 0) {
+      return res.status(404).json({ message: "No objects found for this category" });
+    }
+
+    res.json(rows); 
+  } catch (error) {
+    return res.status(500).json({ message: "Something goes wrong" });
+  }
+};
+

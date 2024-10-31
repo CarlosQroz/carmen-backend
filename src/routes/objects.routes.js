@@ -5,6 +5,7 @@ import {
   deleteObject,
   updateObject,
   createObject,
+  getObjectsByCategory
 } from "../controllers/objects.controller.js";
 
 const router = Router();
@@ -23,5 +24,7 @@ router.post("/object", createObject);
 
 //update one
 router.patch("/object/:id", updateObject);
+
+router.get("/categories/:categoryId/objects", getObjectsByCategory);
 
 export default router;
