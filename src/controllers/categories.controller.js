@@ -12,9 +12,7 @@ export const getCategories = async (req, res) => {
 export const getCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const [rows] = await pool.query("SELECT * FROM category WHERE id = ?", [
-      id,
-    ]);
+    const [rows] = await pool.query("SELECT * FROM category WHERE id = ?", [id]);
 
     if (rows.length <= 0) {
       return res.status(404).json({ message: "Category not found" });
@@ -44,15 +42,33 @@ export const deleteCategory = async (req, res) => {
 export const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "Image is required" });
+    }
+
+    // Construir la URL de la imagen
+    const image_url = `/uploads/${req.file.filename}`;
+
+    // Verificar si el nombre fue enviado
+    if (!name) {
+      return res.status(400).json({ message: "Name is required" });
+    }
+
+    // Insertar en la base de datos
     const [rows] = await pool.query(
-      "INSERT INTO category (name) VALUES (?)",
-      [name]
+      "INSERT INTO category (name, image_url) VALUES (?, ?)",
+      [name, image_url]
     );
-    res.status(201).json({ id: rows.insertId, name });
+
+    
+    res.status(201).json({ id: rows.insertId, name, image_url });
   } catch (error) {
+    console.error("Error creating category:", error.message);
     return res.status(500).json({ message: "Something goes wrong" });
   }
 };
+
 
 export const updateCategory = async (req, res) => {
   try {
@@ -67,9 +83,7 @@ export const updateCategory = async (req, res) => {
     if (result.affectedRows === 0)
       return res.status(404).json({ message: "Category not found" });
 
-    const [rows] = await pool.query("SELECT * FROM category WHERE id = ?", [
-      id,
-    ]);
+    const [rows] = await pool.query("SELECT * FROM category WHERE id = ?", [id]);
 
     res.json(rows[0]);
   } catch (error) {
